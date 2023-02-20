@@ -34,7 +34,7 @@ class Agenda
 
         $this->id = $id ? (string) $id : Uuid::v4()->toRfc4122();
         $this->setName($name);
-        $this->setSlug((string) $slugger->slug($name));
+        $this->setSlug((string) $slugger->slug($name)->lower());
     }
 
     public function getId(): Uuid
