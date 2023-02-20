@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Agenda;
+use App\Factory\AgendaFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -10,19 +10,21 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $agenda1 = new Agenda('Vacations Planning');
-        $agenda1->setIsEnabled(true);
+        AgendaFactory::createOne([
+            'isEnabled' => true,
+            'name' => 'Vacations Planning',
+        ]);
 
-        $agenda2 = new Agenda('Work & Meetings');
-        $agenda2->setIsEnabled(true);
+        AgendaFactory::createOne([
+            'isEnabled' => true,
+            'name' => 'Work & Meetings',
+        ]);
 
-        $agenda3 = new Agenda('Disabled Agenda');
-        $agenda3->setIsEnabled(false);
+        AgendaFactory::createOne([
+            'isEnabled' => false,
+            'name' => 'Disabled Agenda',
+        ]);
 
-        $manager->persist($agenda1);
-        $manager->persist($agenda2);
-        $manager->persist($agenda3);
-
-        $manager->flush();
+        AgendaFactory::createMany(166);
     }
 }
