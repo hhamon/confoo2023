@@ -38,4 +38,9 @@ class AgendaRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findBySlug(string $slug): ?Agenda
+    {
+        return $this->findOneBy(['slug' => $slug, 'isEnabled' => true]);
+    }
 }

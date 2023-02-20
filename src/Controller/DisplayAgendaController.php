@@ -20,7 +20,7 @@ class DisplayAgendaController extends AbstractController
 
     public function __invoke(string $slug): Response
     {
-        $agenda = $this->agendaRepository->findOneBy(['slug' => $slug, 'isEnabled' => true]);
+        $agenda = $this->agendaRepository->findBySlug($slug);
 
         if (!$agenda instanceof Agenda) {
             throw $this->createNotFoundException('Agenda does not exist!');
