@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ agenda.name }} - Upcoming Availabilities{% endblock %}
+
+{% block body %}
+
+    <h1>{{ agenda.name }}</h1>
+
+    <h2>Upcoming Availabilities</h2>
+
+    <ul>
+        {% for agenda_slot in upcoming_slots %}
+            <li>
+                {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }},
+                {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }} -
+                {{ agenda_slot.status | capitalize }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

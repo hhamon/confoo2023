@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Agenda;
 use App\Entity\AgendaSlot;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,5 +38,23 @@ class AgendaSlotRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * @return AgendaSlot[]
+     */
+    public function findUpcomingSlots(Agenda $agenda): array
+    {
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+
+        $qb = $this->createQueryBuilder('slot');
+
+        $qb->andWhere($qb->expr()->eq('slot.agenda', ':agenda'))
+            ->andWhere($qb->expr()->gt('slot.opensAt', ':now'))
+            ->orderBy('slot.opensAt', 'ASC')
+            ->setParameter('agenda', $agenda)
+            ->setParameter('now', $now);
+
+        return $qb->getQuery()->getResult();
     }
 }

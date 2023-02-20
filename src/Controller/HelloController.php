@@ -15,7 +15,7 @@ class HelloController extends AbstractController
         $firstName = $request->query->get('firstName');
         $lastName = $request->query->get('lastName');
 
-        return $this->render('hello/index.html.twig', [
+        return $this->render('hello/agenda.html.twig', [
             'first_name' => $name,
             'last_name' => $lastName,
         ]);

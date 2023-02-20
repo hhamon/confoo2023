@@ -55,14 +55,33 @@ class AgendaSlot
         return Uuid::fromString($this->id);
     }
 
-    public function getOpensAt(): ?\DateTimeImmutable
+    public function getOpensAt(): \DateTimeImmutable
     {
         return $this->opensAt;
+    }
+
+    public function getLocalOpensAt(): \DateTimeImmutable
+    {
+        $utcOpensAt = clone $this->opensAt;
+
+        return $utcOpensAt->setTimezone(new \DateTimeZone($this->agenda->getTimezone()));
     }
 
     public function getClosesAt(): ?\DateTimeImmutable
     {
         return $this->closesAt;
+    }
+
+    public function getLocalClosesAt(): \DateTimeImmutable
+    {
+        $utcClosesAt = clone $this->closesAt;
+
+        return $utcClosesAt->setTimezone(new \DateTimeZone($this->agenda->getTimezone()));
+    }
+
+    public function getTimezone(): string
+    {
+        return $this->agenda->getTimezone();
     }
 
     public function getStatus(): string

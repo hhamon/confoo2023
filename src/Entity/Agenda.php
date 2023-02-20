@@ -42,6 +42,11 @@ class Agenda
         return Uuid::fromString($this->id);
     }
 
+    public function getTimezone(): string
+    {
+        return 'America/Montreal';
+    }
+
     public function getName(): string
     {
         return $this->name;
