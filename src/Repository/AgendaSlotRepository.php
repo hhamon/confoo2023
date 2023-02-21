@@ -55,6 +55,7 @@ class AgendaSlotRepository extends ServiceEntityRepository
             ->setParameter('agenda', $agenda)
             ->setParameter('now', $now);
 
+        /** @var AgendaSlot[] */
         return $qb->getQuery()->getResult();
     }
 }

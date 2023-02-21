@@ -17,6 +17,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
+        \assert($adminUrlGenerator instanceof AdminUrlGenerator);
 
         return $this->redirect($adminUrlGenerator->setController(AgendaCrudController::class)->generateUrl());
     }
