@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book an Appointment{% endblock %}
+
+{% block body %}
+
+    <h1>{{ agenda.name }}</h1>
+
+    <h2>
+        {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }} @
+        {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }}
+    </h2>
+
+    {# TODO: Add form here #}
+
+{% endblock %}

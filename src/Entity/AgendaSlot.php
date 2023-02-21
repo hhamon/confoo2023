@@ -135,4 +135,19 @@ class AgendaSlot
     {
         return $other instanceof self && $this->getId()->equals($other->getId());
     }
+
+    public function isOpen(): bool
+    {
+        return $this->status === self::STATUS_OPEN;
+    }
+
+    public function getOwner(): User
+    {
+        return $this->agenda->getOwner();
+    }
+
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->getOwner()->equals($user);
+    }
 }

@@ -23,9 +23,16 @@
     <ul>
         {% for agenda_slot in upcoming_slots %}
             <li>
-                {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }},
+                {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }} @
                 {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }} -
-                {{ agenda_slot.status | capitalize }}
+
+                {% if agenda_slot.open %}
+                    <a href="{{ path('app_book_appointment', { id: agenda_slot.id }) }}">
+                        {{- agenda_slot.status | capitalize -}}
+                    </a>
+                {% else %}
+                    {{ agenda_slot.status | capitalize }}
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
