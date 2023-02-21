@@ -88,6 +88,11 @@ class Appointment
         return $this->slot;
     }
 
+    public function getAgenda(): Agenda
+    {
+        return $this->slot->getAgenda();
+    }
+
     public function getGuestName(): string
     {
         return $this->guestName;
