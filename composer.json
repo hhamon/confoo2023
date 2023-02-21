@@ -83,6 +83,13 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "lint": [
+            "bin/console lint:twig templates",
+            "vendor/bin/ecs"
+        ],
+        "lint:fix": [
+            "vendor/bin/ecs --fix"
         ]
     },
     "conflict": {
@@ -104,6 +111,7 @@
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "6.2.*",
         "symfony/web-profiler-bundle": "6.2.*",
+        "symplify/easy-coding-standard": "^11.2",
         "zenstruck/foundry": "^1.28"
     }
 }
