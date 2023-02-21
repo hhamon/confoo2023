@@ -150,4 +150,13 @@ class AgendaSlot
     {
         return $this->getOwner()->equals($user);
     }
+
+    public function lock(): void
+    {
+        if (!$this->isOpen()) {
+            throw new \LogicException('Agenda slot must be open in order to be locked for booking.');
+        }
+
+        $this->status = self::STATUS_BOOKED;
+    }
 }

@@ -11,6 +11,6 @@
         {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }}
     </h2>
 
-    {# TODO: Add form here #}
+    {{ form(form) }}
 
 {% endblock %}

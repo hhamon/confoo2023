@@ -42,7 +42,10 @@ class Appointment
         }
 
         $this->id = $id ? (string) $id : Uuid::v4()->toRfc4122();
+
         $this->slot = $slot;
+        $this->slot->lock();
+
         $this->setGuestName($guestName);
         $this->setGuestEmail($guestEmail);
         $this->setMessage($message);
