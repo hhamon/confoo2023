@@ -3,8 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\AgendaSlot;
+use App\Entity\User;
 use App\Factory\AgendaFactory;
 use App\Factory\AgendaSlotFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -12,6 +14,23 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        UserFactory::new()->promoteAdministrator()->create([
+            'email' => 'admin@example.com',
+            'fullName' => 'Hugo Hamon',
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'freemium_user@example.com',
+            'roles' => [User::ROLE_FREEMIUM_USER],
+        ]);
+
+        UserFactory::createOne([
+            'email' => 'premium_user@example.com',
+            'roles' => [User::ROLE_PREMIUM_USER],
+        ]);
+
+        UserFactory::createMany(237);
+
         AgendaFactory::createOne([
             'isEnabled' => true,
             'name' => 'Vacations Planning',
