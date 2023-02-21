@@ -24,8 +24,15 @@ class Agenda
     #[ORM\Column]
     private bool $isEnabled = false;
 
-    public function __construct(string $name, ?string $id = null)
-    {
+    #[ORM\ManyToOne(inversedBy: 'agendas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $owner;
+
+    public function __construct(
+        string $name,
+        User $owner,
+        ?string $id = null,
+    ) {
         $slugger = new AsciiSlugger('en');
 
         if ($id) {
@@ -33,6 +40,7 @@ class Agenda
         }
 
         $this->id = $id ? (string) $id : Uuid::v4()->toRfc4122();
+        $this->setOwner($owner);
         $this->setName($name);
         $this->setSlug((string) $slugger->slug($name)->lower());
     }
@@ -81,5 +89,16 @@ class Agenda
         $this->isEnabled = $isEnabled;
 
         return $this;
+    }
+
+    public function getOwner(): User
+    {
+        return $this->owner;
+    }
+
+    private function setOwner(User $owner): void
+    {
+        $this->owner = $owner;
+        $this->owner->addAgenda($this);
     }
 }

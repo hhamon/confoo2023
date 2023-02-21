@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -35,6 +37,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $fullName;
 
+    /**
+     * @var Collection<int, Agenda>
+     */
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Agenda::class)]
+    private Collection $agendas;
+
     public function __construct(
         string $fullName,
         string $email,
@@ -49,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->setFullName($fullName);
         $this->setEmail($email);
         $this->setPassword($password);
+        $this->agendas = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -132,5 +141,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Agenda>
+     */
+    public function getAgendas(): Collection
+    {
+        return $this->agendas;
+    }
+
+    public function addAgenda(Agenda $agenda): self
+    {
+        if (!$this->equals($agenda->getOwner())) {
+            throw new \LogicException('Agenda is not owned by the current user.');
+        }
+
+        if (!$this->agendas->contains($agenda)) {
+            $this->agendas->add($agenda);
+        }
+
+        return $this;
+    }
+
+    public function removeAgenda(Agenda $agenda): self
+    {
+        if (!$this->equals($agenda->getOwner())) {
+            throw new \LogicException('Agenda is not owned by the current user.');
+        }
+
+        if ($this->agendas->contains($agenda)) {
+            $this->agendas->removeElement($agenda);
+        }
+
+        return $this;
+    }
+
+    public function equals(mixed $other): bool
+    {
+        return $other instanceof self && $this->getId()->equals($other->getId());
     }
 }

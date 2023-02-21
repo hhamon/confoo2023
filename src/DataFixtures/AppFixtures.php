@@ -19,12 +19,12 @@ class AppFixtures extends Fixture
             'fullName' => 'Hugo Hamon',
         ]);
 
-        UserFactory::createOne([
+        $freemiumUser = UserFactory::createOne([
             'email' => 'freemium_user@example.com',
             'roles' => [User::ROLE_FREEMIUM_USER],
         ]);
 
-        UserFactory::createOne([
+        $premiumUser = UserFactory::createOne([
             'email' => 'premium_user@example.com',
             'roles' => [User::ROLE_PREMIUM_USER],
         ]);
@@ -34,11 +34,13 @@ class AppFixtures extends Fixture
         AgendaFactory::createOne([
             'isEnabled' => true,
             'name' => 'Vacations Planning',
+            'owner' => $premiumUser,
         ]);
 
         $agenda2 = AgendaFactory::createOne([
             'isEnabled' => true,
             'name' => 'Work & Meetings',
+            'owner' => $premiumUser,
         ]);
 
         AgendaSlotFactory::createOne([
@@ -84,6 +86,7 @@ class AppFixtures extends Fixture
         AgendaFactory::createOne([
             'isEnabled' => false,
             'name' => 'Disabled Agenda',
+            'owner' => $freemiumUser,
         ]);
 
         AgendaFactory::createMany(166);

@@ -33,6 +33,7 @@ final class AgendaFactory extends ModelFactory
     {
         return [
             'id' => self::faker()->unique()->uuid(),
+            'owner' => UserFactory::random(),
             'isEnabled' => self::faker()->boolean(72),
             'name' => self::faker()->unique()->text(30),
         ];
