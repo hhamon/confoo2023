@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/agenda/{slug}', name: 'app_display_agenda', methods: ['GET'])]
+#[Route('/agendas/{slug}', name: 'app_display_agenda', methods: ['GET'])]
 class DisplayAgendaController extends AbstractController
 {
     public function __construct(

@@ -6,7 +6,19 @@
 
     <h1>{{ agenda.name }}</h1>
 
+    {% if is_granted('ROLE_PREMIUM_USER') %}
+        <p>
+            <a href="#">Add a new agenda</a>
+        </p>
+    {% endif %}
+
     <h2>Upcoming Availabilities</h2>
+
+    {% if is_granted('AGENDA_EDIT', agenda) %}
+        <p>
+            <a href="#">Manage availabilities</a>
+        </p>
+    {% endif %}
 
     <ul>
         {% for agenda_slot in upcoming_slots %}
