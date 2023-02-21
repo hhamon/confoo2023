@@ -92,6 +92,13 @@
         ],
         "lint:fix": [
             "vendor/bin/ecs --fix"
+        ],
+        "reset:db-dev": [
+            "bin/console doctrine:database:drop -e dev --no-interaction --if-exists --force",
+            "bin/console doctrine:database:create -e dev --no-interaction",
+            "bin/console doctrine:migration:migrate -e dev --no-interaction --all-or-nothing --allow-no-migration",
+            "bin/console doctrine:schema:validate -e dev --no-interaction",
+            "bin/console doctrine:fixtures:load -e dev --no-interaction"
         ]
     },
     "conflict": {
