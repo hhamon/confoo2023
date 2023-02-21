@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AgendaSlotRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -30,6 +32,12 @@ class AgendaSlot
     #[ORM\JoinColumn(nullable: false)]
     private Agenda $agenda;
 
+    /**
+     * @var Collection<int, Appointment>
+     */
+    #[ORM\OneToMany(mappedBy: 'slot', targetEntity: Appointment::class)]
+    private Collection $appointments;
+
     public function __construct(
         Agenda $agenda,
         \DateTimeImmutable $opensAt,
@@ -48,6 +56,7 @@ class AgendaSlot
         $this->agenda = $agenda;
         $this->opensAt = $opensAt;
         $this->closesAt = $closesAt;
+        $this->appointments = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -99,5 +108,31 @@ class AgendaSlot
     public function getAgenda(): Agenda
     {
         return $this->agenda;
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): self
+    {
+        if (!$this->equals($appointment->getSlot())) {
+            throw new \LogicException('Appointment slot does match the current slot.');
+        }
+
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+        }
+
+        return $this;
+    }
+
+    public function equals(mixed $other): bool
+    {
+        return $other instanceof self && $this->getId()->equals($other->getId());
     }
 }
