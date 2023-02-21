@@ -1,0 +1,8 @@
+Hi {{ appointment.guestName }},
+
+Your appointment with {{ agenda_slot.owner.fullName }} is confirmed and scheduled:
+
+* Date: {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }}
+* Time: {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }}
+
+Thank you,

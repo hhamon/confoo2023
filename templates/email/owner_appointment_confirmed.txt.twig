@@ -1,0 +1,14 @@
+Hi {{ agenda_slot.owner.fullName }},
+
+A new appointment has been booked by {{ appointment.guestName }}:
+
+* Date: {{ agenda_slot.localOpensAt | date('m/d/Y', agenda_slot.timezone) }}
+* Time: {{ agenda_slot.localOpensAt | date('H:i', agenda_slot.timezone) }} - {{ agenda_slot.localClosesAt | date('H:i', agenda_slot.timezone) }}
+
+{% if appointment.message is not empty %}
+* Guest message:
+
+{{ appointment.message }}
+{% endif %}
+
+Thank you,

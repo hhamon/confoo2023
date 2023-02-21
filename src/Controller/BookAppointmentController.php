@@ -7,9 +7,12 @@ use App\Entity\Appointment;
 use App\Entity\User;
 use App\Form\AppointmentType;
 use App\Repository\AppointmentRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/appointments/{id}/book', name: 'app_book_appointment', methods: ['GET', 'POST'])]
@@ -17,6 +20,7 @@ final class BookAppointmentController extends AbstractController
 {
     public function __construct(
         private readonly AppointmentRepository $appointmentRepository,
+        private readonly MailerInterface $mailer,
     ) {
     }
 
@@ -48,8 +52,30 @@ final class BookAppointmentController extends AbstractController
             $this->appointmentRepository->save($appointment, flush: true);
 
             // Send email to guest
+            $email = (new TemplatedEmail())
+                ->subject(\sprintf('Your appointment with %s is confirmed.', $slot->getOwner()->getFullName()))
+                ->to(new Address($appointment->getGuestEmail(), $appointment->getGuestName()))
+                ->textTemplate('email/guest_appointment_confirmed.txt.twig')
+                ->context([
+                    'appointment' => $appointment,
+                    'agenda_slot' => $slot,
+                    'agenda' => $agenda,
+                ]);
+
+            $this->mailer->send($email);
 
             // Send email to calendar's owner
+            $email = (new TemplatedEmail())
+                ->subject(\sprintf('You have a new appointment with %s.', $appointment->getGuestName()))
+                ->to(new Address($slot->getOwner()->getEmail(), $slot->getOwner()->getFullName()))
+                ->textTemplate('email/owner_appointment_confirmed.txt.twig')
+                ->context([
+                    'appointment' => $appointment,
+                    'agenda_slot' => $slot,
+                    'agenda' => $agenda,
+                ]);
+
+            $this->mailer->send($email);
 
             return $this->redirectToRoute('app_display_agenda', ['slug' => $agenda->getSlug()]);
         }
