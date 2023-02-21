@@ -16,7 +16,7 @@
 
     {% if is_granted('AGENDA_EDIT', agenda) %}
         <p>
-            <a href="#">Manage availabilities</a>
+            <a href="{{ path('app_manage_agenda', { slug: agenda.slug }) }}">Manage availabilities</a>
         </p>
     {% endif %}
 
